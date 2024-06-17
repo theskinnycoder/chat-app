@@ -18,33 +18,39 @@ type Store = {
 	setChats: (chats: Chat[]) => void
 	addChat: (chat: Chat) => void
 	addMessage: (chatId: string, message: Message) => void
+	deleteChat: (chatId: string) => void
 }
 
 const dummyUsers: User[] = [
 	{
 		id: '1',
 		name: 'John Doe',
-		avatar: 'https://randomuser.me/api/portraits',
+		avatar: '/LoggedInUser.jpg',
 	},
 	{
 		id: '2',
 		name: 'Jane Doe',
-		avatar: 'https://randomuser.me/api/portraits',
+		avatar: '/User0.png',
 	},
 	{
 		id: '3',
 		name: 'Alice',
-		avatar: 'https://randomuser.me/api/portraits',
+		avatar: '/User1.png',
 	},
 	{
 		id: '4',
 		name: 'Bob',
-		avatar: 'https://randomuser.me/api/portraits',
+		avatar: '/User2.png',
 	},
 	{
 		id: '5',
 		name: 'Charlie',
-		avatar: 'https://randomuser.me/api/portraits',
+		avatar: '/User3.png',
+	},
+	{
+		id: '6',
+		name: 'David',
+		avatar: '/User4.png',
 	},
 ]
 
@@ -103,15 +109,6 @@ const dummyChats: Chat[] = [
 		name: dummyUsers[3].name,
 		createdAt: new Date().toISOString(),
 	},
-	{
-		id: '4',
-		type: 'dm',
-		toUser: dummyUsers[4],
-		messages: [],
-		fromUser: currentUser,
-		name: dummyUsers[4].name,
-		createdAt: new Date().toISOString(),
-	},
 ]
 
 export const useChatStore = create<Store>(set => ({
@@ -144,4 +141,8 @@ export const useChatStore = create<Store>(set => ({
 			},
 		}))
 	},
+	deleteChat: chatId =>
+		set(state => ({
+			chats: state.chats.filter(chat => chat.id !== chatId),
+		})),
 }))
