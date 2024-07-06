@@ -19,6 +19,13 @@ type Store = {
 	addChat: (chat: Chat) => void
 	addMessage: (chatId: string, message: Message) => void
 	deleteChat: (chatId: string) => void
+
+	// Replies
+	addReply: (chatId: string, parentId: string, reply: Message) => void
+
+	// search
+	query: string
+	setQuery: (query: string) => void
 }
 
 const dummyUsers: User[] = [
@@ -69,6 +76,7 @@ const dummyChats: Chat[] = [
 				fromUserId: currentUser.id,
 				toUserId: dummyUsers[1].id,
 				chatId: '1',
+				replies: [],
 			},
 			{
 				id: '2',
@@ -77,6 +85,7 @@ const dummyChats: Chat[] = [
 				fromUserId: dummyUsers[1].id,
 				toUserId: currentUser.id,
 				chatId: '1',
+				replies: [],
 			},
 			{
 				id: '3',
@@ -85,6 +94,7 @@ const dummyChats: Chat[] = [
 				fromUserId: currentUser.id,
 				toUserId: dummyUsers[1].id,
 				chatId: '1',
+				replies: [],
 			},
 		],
 		fromUser: currentUser,
@@ -111,7 +121,7 @@ const dummyChats: Chat[] = [
 	},
 ]
 
-export const useChatStore = create<Store>(set => ({
+export const useChatStore = create<Store>((set, get) => ({
 	users: dummyUsers,
 
 	currentUser: currentUser,
@@ -145,4 +155,19 @@ export const useChatStore = create<Store>(set => ({
 		set(state => ({
 			chats: state.chats.filter(chat => chat.id !== chatId),
 		})),
+
+	addReply: (chatId, parentId, reply) => {
+		const chat = get().chats.find(chat => chat.id === chatId)
+
+		if (!chat) return
+
+		const message = chat?.messages.find(message => message.id === parentId)
+
+		if (!message) return
+
+		message?.replies.push({ ...reply, parentId })
+	},
+
+	query: '',
+	setQuery: query => set(() => ({ query })),
 }))

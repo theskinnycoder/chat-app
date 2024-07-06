@@ -40,10 +40,6 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 		return <></>
 	}
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setMessage(event.target.value)
-	}
-
 	const handleThumbsUp = () => {
 		const newMessage: Message = {
 			id: generateRandomId(),
@@ -54,6 +50,7 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 			}),
 			timestamp: new Date().toISOString(),
 			chatId: currentChat.id,
+			replies: [],
 		}
 		addMessage(currentChat.id, newMessage)
 		setMessage('')
@@ -70,6 +67,7 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 				}),
 				timestamp: new Date().toISOString(),
 				chatId: currentChat.id,
+				replies: [],
 			}
 			addMessage(currentChat.id, newMessage)
 			setMessage('')
@@ -189,7 +187,7 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 						value={message}
 						ref={inputRef}
 						onKeyDown={handleKeyPress}
-						onChange={handleInputChange}
+						onChange={e => setMessage(e.target.value)}
 						name='message'
 						placeholder='Aa'
 						className='flex h-9 w-full resize-none items-center overflow-hidden rounded-full border bg-background'

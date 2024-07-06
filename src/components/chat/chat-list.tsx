@@ -1,9 +1,8 @@
 import { cn } from '@/lib/utils'
 import { useChatStore } from '@/store'
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import ChatAvatar from './chat-avatar'
 import ChatBottombar from './chat-bottombar'
+import ChatMessage from './chat-message'
 
 interface ChatListProps {
 	isMobile: boolean
@@ -55,50 +54,14 @@ export default function ChatList({ isMobile }: ChatListProps) {
 					This is the start of your conversation with {currentChat.name}
 				</span>
 
-				<AnimatePresence key={currentChat.id}>
-					{currentChat?.messages?.map(message => (
-						<motion.div
-							key={message.id}
-							layout
-							initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
-							animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-							exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
-							transition={{
-								opacity: { duration: 0.1 },
-								layout: {
-									type: 'spring',
-									bounce: 0.3,
-									duration: currentChat.messages.indexOf(message) * 0.05 + 0.2,
-								},
-							}}
-							style={{
-								originX: 0.5,
-								originY: 0.5,
-							}}
-							className={cn(
-								'flex flex-col gap-2 whitespace-pre-wrap p-4',
-								message.fromUserId === fromUser.id
-									? 'items-end'
-									: 'items-start',
-							)}
-						>
-							<div className='flex items-center gap-3'>
-								{fromUser && toUser && message.toUserId !== toUser.id && (
-									<ChatAvatar user={fromUser} />
-								)}
-
-								<span className='min-w-xs rounded-md bg-accent p-3'>
-									{message.content}
-								</span>
-
-								{toUser && message.toUserId === toUser.id && (
-									<ChatAvatar user={toUser} />
-								)}
-							</div>
-						</motion.div>
-					))}
-				</AnimatePresence>
+				{currentChat?.messages?.map(message => (
+					<ChatMessage
+						key={message.id}
+						message={message}
+					/>
+				))}
 			</div>
+
 			{/* Chat Input */}
 			<ChatBottombar isMobile={isMobile} />
 		</div>

@@ -2,11 +2,12 @@ import { Button } from '@/components/ui/button'
 import { useChatStore } from '@/store'
 import { Info, Phone, Video } from 'lucide-react'
 import ChatAvatar from './chat-avatar'
+import { Input } from '@/components/ui/input'
 
 export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }]
 
 export default function ChatTopbar() {
-	const { currentChat, currentUser } = useChatStore()
+	const { currentChat, currentUser, query, setQuery } = useChatStore()
 
 	const toUser = currentChat?.type === 'dm' ? currentChat.toUser : null
 	const toUsers =
@@ -37,7 +38,15 @@ export default function ChatTopbar() {
 				)}
 			</div>
 
-			<div>
+			<div className='flex items-center gap-8'>
+				{/* Search bar */}
+				<Input
+					value={query}
+					onChange={e => setQuery(e.target.value)}
+					type='search'
+					placeholder='Search messages...'
+				/>
+
 				{TopbarIcons.map((icon, index) => (
 					<Button
 						key={index}

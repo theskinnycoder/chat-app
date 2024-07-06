@@ -1,11 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import type { User } from '@/types'
+import React from 'react'
 
 interface ChatAvatarProps {
 	user: User
 }
 
-export default function ChatAvatar({ user }: ChatAvatarProps) {
+const ChatAvatar = React.memo<ChatAvatarProps>(({ user }) => {
 	return (
 		<Avatar className='flex items-center justify-center'>
 			<AvatarImage
@@ -20,4 +21,6 @@ export default function ChatAvatar({ user }: ChatAvatarProps) {
 			</AvatarFallback>
 		</Avatar>
 	)
-}
+})
+
+export default ChatAvatar

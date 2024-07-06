@@ -1,3 +1,7 @@
+export type Reply = {
+	parentId: string
+} & Message
+
 export interface Message {
 	id: string
 	chatId: string
@@ -5,6 +9,7 @@ export interface Message {
 	toUserId?: string
 	content: string
 	timestamp: string
+	replies: Reply[]
 }
 
 export interface DMChat {
